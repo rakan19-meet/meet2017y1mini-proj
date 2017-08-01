@@ -52,10 +52,14 @@ RIGHT=3
 
 
 direction = UP
+UP_EDGE = 250
+DOWN_EDGE = -250
+RIGHT_EDGE = 400
+LEFT_EDGE = -400
 def up():
     global direction#snake direction is global (same everywhere)
     direction=UP #Change direction to up
-    move_snake() #Update the snake drawing <- remember me later
+    #Update the snake drawing <- remember me later
     print("You pressed the up key!")
 #2. Make functions down(), left(), and right() that change direction
 ####WRITE YOUR CODE HERE!!
@@ -63,19 +67,16 @@ def up():
 def down():
     global direction
     direction=DOWN
-    move_snake()
     print("you pressed the down key")
 
 def left():
     global direction
     direction=LEFT
-    move_snake()
     print("you pressed the left key")
 
 def right():
     global direction
     direction=RIGHT
-    move_snake()
     print("you pressed the right key")
     
     
@@ -95,11 +96,33 @@ def move_snake():
         snake.goto(x_pos - SQUARE_SIZE, y_pos)
         print("You moved left!")
     elif direction==UP:
-        snake.goto(y_pos+SQUARE_SIZE,x_pos)
+        snake.goto(x_pos,y_pos+SQUARE_SIZE)
         print("you moved up")
-    elif direction==down:
-        snake.goto(y_pos-SQUARE_SIZE,x-pos)
+    else:
+        snake.goto(x_pos,y_pos-SQUARE_SIZE)
         print("you moved down")
+   
+    #Add new lines to the end of the function
+    #Grab position of snake
+    new_pos = snake.pos()
+    new_x_pos = new_pos[0]
+    new_y_pos = new_pos[1]
+    
+    if new_x_pos >= RIGHT_EDGE:
+        print("You hit the right edge! Game over!")
+        quit()
+    if new_y_pos >= UP_EDGE:
+        print("You hit the upper edge! Game over!")
+        quit()
+    if new_x_pos <= LEFT_EDGE:
+        print("You hit the left edge! Game over!")
+        quit()
+
+    if new_y_pos <= DOWN_EDGE:
+        print("You hit the lower edge! Game over!")
+        quit()
+
+        
     #4. Write the conditions for UP and DOWN on your own
     ##### YOUR CODE HERE
     #Stamp new element and append new stamp in list
@@ -114,6 +137,9 @@ def move_snake():
     old_stamp = stamp_list.pop(0)
     snake.clearstamp(old_stamp)
     pos_list.pop(0)
+    turtle.ontimer(move_snake,TIME_STEP)
+
+move_snake()
 
 
           
@@ -126,4 +152,49 @@ turtle.listen()
 
 turtle.onkeypress(right,RIGHT_ARROW)
 turtle.listen()
+
+turtle.register_shape("trash.gif")
+food = turtle.clone()
+food.shape("trash.gif")
+#Locations of food
+food_pos = [(100,100), (-100,100), (-100,-100), (100,-100)]
+food_stamps = []
+
+for this_food_pos in food_pos :
+    food.goto(this_food_pos[0],this_food_pos[1])
+    food.stamp()
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
